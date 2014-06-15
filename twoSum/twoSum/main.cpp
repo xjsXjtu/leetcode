@@ -1,59 +1,34 @@
 #include <vector>
 #include <iostream>
-#include <algorithm>
+#include <map>
 using namespace std;
 
 class Solution {
-private:
-    typedef struct{
-        int ind;
-        int val;
-    }ind_val_t;
-
-private:
-    static bool isSmaller(const ind_val_t a, const ind_val_t b)
-    {
-        return a.val < b.val;
-    }
-
 public:
     vector<int> twoSum(vector<int> &numbers, int target) 
     {
         int len = numbers.size();
+        vector<int> out(2);
 
-        vector<ind_val_t> iv_vec(len);
+        map<long long, int> mapping; // default is 0
+        // cout << mapping[0] << endl; // 0 is printed
+
         for(int i=0; i<len; i++)
         {
-            iv_vec[i].ind = i;
-            iv_vec[i].val = numbers[i];
-        }
-
-        sort(iv_vec.begin(), iv_vec.end(), isSmaller);
-
-        /* xi: the last element that < target/2 */
-        /* xj: xi + 1, the first elemet that >= target/2 */
-        int left=0, right=len-1;
-        vector<int> out(2);
-        while(left < right)
-        {
-            int sum = iv_vec[left].val + iv_vec[right].val;
-            if(sum == target)
+            long long mul = (target - numbers[i]) * numbers[i];
+            
+            if(mapping[mul] > 0)
             {
-                out[0] = iv_vec[left].ind + 1;
-                out[1] = iv_vec[right].ind + 1;
-                if(out[0] > out[1])
+                if(numbers[i] + numbers[mapping[mul]-1] == target)
                 {
-                    swap(out[0], out[1]);
+                    out[0] = mapping[mul];
+                    out[1] = i + 1;
+                    return out;
                 }
-                return out;
-            }
-            else if(sum < target)
-            {
-                left++;
             }
             else
             {
-                right--;
+                mapping[mul] = i + 1;
             }
         }
 
@@ -86,7 +61,7 @@ int main()
     
 
 	Solution s;
-	vector<int> out = s.twoSum(test_vec5, test_tar5);
+ 	vector<int> out = s.twoSum(test_vec3, test_tar3);
 	cout << out[0] << " " << out[1] << endl;
 
 	
