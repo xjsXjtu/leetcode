@@ -32,35 +32,15 @@ public:
 
         /* xi: the last element that < target/2 */
         /* xj: xi + 1, the first elemet that >= target/2 */
-        int xi, xj;
-        for(int i=0; i<len; i++)
-        {
-            if(iv_vec[i].val * 2 >= target)
-            {
-                xi = max(i - 1, 0);
-                xj = xi + 1;
-                break;
-            }
-        }
-
+        int left=0, right=len-1;
         vector<int> out(2);
-        if(iv_vec[xj].val == iv_vec[xj+1].val && iv_vec[xj].val + iv_vec[xj+1].val == target)
+        while(left < right)
         {
-            out[0] = iv_vec[xj].ind + 1;
-            out[1] = iv_vec[xj+1].ind + 1;
-            if(out[0] > out[1])
-            {
-                swap(out[0], out[1]);
-            }
-            return out;
-        }
-        while(xi>=0 && xj<len)
-        {
-            int sum = iv_vec[xi].val + iv_vec[xj].val;
+            int sum = iv_vec[left].val + iv_vec[right].val;
             if(sum == target)
             {
-                out[0] = iv_vec[xi].ind + 1;
-                out[1] = iv_vec[xj].ind + 1;
+                out[0] = iv_vec[left].ind + 1;
+                out[1] = iv_vec[right].ind + 1;
                 if(out[0] > out[1])
                 {
                     swap(out[0], out[1]);
@@ -69,11 +49,11 @@ public:
             }
             else if(sum < target)
             {
-                xj++;
+                left++;
             }
             else
             {
-                xi--;
+                right--;
             }
         }
 
