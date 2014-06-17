@@ -12,21 +12,15 @@ class Solution {
 public:
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
     {
-        ListNode *out = NULL;
-        ListNode *tail = out;
+        ListNode out = ListNode(0);
+        ListNode *tail = &out;
         
         if(!l1 || !l2)
         {
             return NULL;
         }
 
-        int s = l1->val + l2->val;
-        int carry = s / 10;
-        ListNode *temp = new ListNode(s % 10);
-        out = temp;
-        tail = out;
-        l1 = l1->next;
-        l2 = l2->next;
+        int carry = 0;
         while(l1 && l2)
         {
             int s = carry + l1->val + l2->val;
@@ -64,7 +58,7 @@ public:
             tail = tail->next;
         }
 
-        return out;
+        return out.next;
     }
 };
 
