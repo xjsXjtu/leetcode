@@ -14,7 +14,7 @@ public:
 
         int maxlen = 1;
         map<char, int> mp;
-        //printf("map['a'] = %d\n", mp['a']);
+        //printf("map['a'] = %d\n", mp['a']); // 0 printed
         mp[s[0]] = 1;
         int k = 1; // k = index + 1
         for(int i=1; i<s.size(); i++)
