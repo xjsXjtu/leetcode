@@ -7,49 +7,23 @@ public:
     string convert(string s, int nRows)
     {
         if(nRows == 1)
-        {
             return s;
-        }
 
          int nUnit = nRows + nRows - 2;
          int nCol = (s.size() + nUnit - 1) / nUnit;
-
          string out;
          
-         // r = 0
-         for(int c=0; c<nCol; c++)
+         for(int r=0; r<nRows; r++)
          {
-            out.push_back(s[c * nUnit]);
-         }
-
-         // r = 1...nRows -2
-         for(int r=1; r<nRows-1; r++)
-         {
-             int c = 0;
-             for(c=0; c<nCol-1; c++)
+             int i=0;
+             for(i=0; i + r < s.size(); i += nUnit)
              {
-                out.push_back(s[c * nUnit + r]);
-                out.push_back(s[c * nUnit + nUnit - r]);
+                 out.push_back(s[i + r]);
+                 if(r>0 && r<nRows-1 && i + nUnit - r < s.size())
+                 {
+                    out.push_back(s[i + nUnit - r]);
+                 }
              }
-             if(c * nUnit + r < s.size())
-             {
-                out.push_back(s[c * nUnit + r]);
-             }
-             if(c * nUnit + nUnit - r < s.size())
-             {
-                out.push_back(s[c * nUnit + nUnit - r]);
-             }
-         }
-
-         // r = nRows - 1
-         int r = nRows - 1, c=0;
-         for(c=0; c<nCol-1; c++)
-         {
-            out.push_back(s[c * nUnit + r]);
-         }
-         if(c * nUnit + r < s.size())
-         {
-            out.push_back(s[c * nUnit + r]);
          }
 
          return out;
