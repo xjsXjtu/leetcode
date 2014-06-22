@@ -28,16 +28,7 @@ public:
             out = out * 10 + str[i] - '0';
         }
 
-        int exp = 0;
-        if(str[i] == 'e' || str[i] == 'E')
-        {
-            for(i++; str[i] >= '0' && str[i] <= '9'; i++)
-            {
-                exp = exp * 10 + str[i] - '0';
-            }
-        }
-        
-        out = neg * out * pow(double(10), exp);
+        out = neg * out;
         if(out > INT_MAX)
         {
             return INT_MAX; // overflow
