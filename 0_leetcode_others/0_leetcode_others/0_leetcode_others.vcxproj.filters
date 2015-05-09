@@ -18,5 +18,11 @@
     <ClCompile Include="threeSum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="threeSumClosest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="letterCombinations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

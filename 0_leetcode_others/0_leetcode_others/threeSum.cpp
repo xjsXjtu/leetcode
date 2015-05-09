@@ -35,7 +35,7 @@ public:
 
 		cout << "[TestSet==>vector<int>] set contains:" << endl;
 		set<vector<int>>::iterator itsetvec;
-#if 1
+#if 0
 		for(itsetvec=svec.begin(); itsetvec!=svec.end(); itsetvec++)
 		{
 			vector<int>::iterator itvec;
@@ -50,7 +50,7 @@ public:
 		for(itsetvec=svec.begin(); itsetvec!=svec.end(); itsetvec++)
 		{
 			vector<int>::iterator itvec;
-			for(itvec=itsetvec->begin(); itvec!=itsetvec->end(); itvec++)
+			for(itvec=((vector<int>)(*itsetvec)).begin(); itvec!=(*itsetvec).end(); itvec++)
 			{
 				cout << *itvec << ", ";
 			}
