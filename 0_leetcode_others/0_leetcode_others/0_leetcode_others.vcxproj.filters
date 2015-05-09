@@ -24,5 +24,8 @@
     <ClCompile Include="letterCombinations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fourSum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
