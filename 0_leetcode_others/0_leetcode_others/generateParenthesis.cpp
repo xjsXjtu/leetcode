@@ -15,17 +15,13 @@ private:
 		}
 		else
 		{
-			string path_bak(path);
 			if(x + 1 <= n)
 			{
-				path.push_back('(');
-				recursivePath(x+1, y, n, path, out);
+				recursivePath(x+1, y, n, path + '(', out);
 			}
 			if(y + 1 <= n && y + 1 <= x)
 			{
-				path = path_bak;
-				path.push_back(')');
-				recursivePath(x, y+1, n, path, out);
+				recursivePath(x, y+1, n, path + ')', out);
 			}
 		}
 	}
