@@ -13,45 +13,27 @@ class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) 
 	{
-		ListNode *out=NULL, *cur=NULL;
+		ListNode dummy(0);
+		ListNode *cur = &dummy;
 		while(l1 && l2)
 		{
 			if(l1->val < l2->val)
 			{
-				if(cur != NULL)
-					cur->next = l1;
-				cur = l1;
+				cur->next = l1;
 				l1 = l1->next;
 			}
 			else 
 			{
-				if(cur != NULL)
-					cur->next = l2;
-				cur = l2;
+				cur->next = l2;
 				l2 = l2->next;
 			}	
-			if(out == NULL)
-				out = cur;
+			cur = cur->next;
 		}
-		while(l1)
-		{
-			if(cur != NULL)
-				cur->next = l1;
-			cur = l1;
-			l1 = l1->next;
-			if(out == NULL)
-				out = cur;
-		}
-		while(l2)
-		{
-			if(cur != NULL)
-				cur->next = l2;
-			cur = l2;
-			l2 = l2->next;
-			if(out == NULL)
-				out = cur;
-		}
-		return out;
+		if(l1) 
+			cur->next = l1;
+		if(l2)
+			cur->next = l2;
+		return dummy.next;
     }
 };
 
@@ -76,8 +58,8 @@ int main()
 	tail = head2;
 	tail->next = &ListNode(3);
 	
-	//test(head1, head2);
-	test(head1, NULL);
+	test(head1, head2);
+	//test(head1, NULL);
 	system("pause");
 	return 0;
 }
