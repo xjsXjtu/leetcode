@@ -10,67 +10,50 @@ void printSudoku(vector<vector<char>>& board);
 
 class Solution {
 private:
-	bool isValidNum(int x, int y, int val, set<int> set_square[9], set<int> set_horizon[9], set<int> set_vertical[9])
+	bool isValidNum(vector<vector<char>>& board, int x, int y, int val)
 	{
-		if(
-			set_square  [x / 3 * 3 + y / 3].find(val) == set_square  [x / 3 * 3 + y / 3].end()
-		 && set_horizon [x                ].find(val) == set_horizon [x                ].end()
-		 && set_vertical[y                ].find(val) == set_vertical[y                ].end()
-		 )
-			return true;
-		return false;
+		for(int k=0;k<9;k++)  
+		{  
+			if(board[k][y]==val + '0')  
+				return false;  
+		}  
+		for(int k=0;k<9;k++)  
+		{  
+			if(board[x][k]==val + '0')  
+				return false;  
+		}          
+		for(int row = x/3*3; row<x/3*3+3; row++)  
+		{  
+			for(int col=y/3*3; col<y/3*3+3; col++)  
+			{  
+				if(board[row][col]==val + '0')  
+					return false;
+			}  
+		}  
+		return true; 
 	}
 
-	bool solve(vector<vector<char>>& board, int x, int y, set<int> set_square[9], set<int> set_horizon[9], set<int> set_vertical[9])
+	bool solve(vector<vector<char>>& board, int x, int y)
 	{
 		if(x == 9)
 			return true;
 		if(y == 9)
-			return solve(board, x + 1, 0, set_square, set_horizon, set_vertical);
+			return solve(board, x + 1, 0);
 		if(board[x][y] != '.')
-			return solve(board, x, y + 1, set_square, set_horizon, set_vertical);
+			return solve(board, x, y + 1);
 
 		for(int val=1; val<10; val++)
 		{
-			if(isValidNum(x, y, val, set_square, set_horizon, set_vertical))
+			if(isValidNum(board, x, y, val))
 			{
 				board[x][y] = val + '0';
-				set_square  [x / 3 * 3 + y / 3].insert(val);
-				set_horizon [x                ].insert(val);
-				set_vertical[y                ].insert(val);
-				if(solve(board, x, y + 1, set_square, set_horizon, set_vertical))
+				if(solve(board, x, y + 1))
 					return true;
 				// backtracking, need restore the board
 				board[x][y] = '.';
-				set_square  [x / 3 * 3 + y / 3].erase(val);
-				set_horizon [x                ].erase(val);
-				set_vertical[y                ].erase(val);
-		
 			}
 		}
 		return false;
-	}
-
-	void initSudokuSet(vector<vector<char>>& board, set<int> set_square[9], set<int> set_horizon[9], set<int> set_vertical[9])
-	{
-		for(int i=0; i<9; i++)
-		{
-			set_square[i].clear();
-			set_horizon[i].clear();
-			set_vertical[i].clear();
-		}
-		for(int x=0; x<9; x++)		// horizon
-		{
-			for(int y=0; y<9; y++)	// vertical
-			{
-				if(board[x][y] != '.')
-				{
-					set_square  [x / 3 * 3 + y / 3].insert(board[x][y] - '0');
-					set_horizon [x                ].insert(board[x][y] - '0');
-					set_vertical[y                ].insert(board[x][y] - '0');
-				}
-			}
-		}
 	}
 
 public:
@@ -78,12 +61,8 @@ public:
 	{
 		assert(board.size() == 9);
 		assert(board[0].size() == 9);
-		set<int> set_square[9];
-		set<int> set_horizon[9];
-		set<int> set_vertical[9];
 		
-		initSudokuSet(board, set_square, set_horizon, set_vertical);
-		solve(board, 0, 0, set_square, set_horizon, set_vertical);
+		solve(board, 0, 0);
 		return;
     }
 };
