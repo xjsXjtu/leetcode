@@ -1,6 +1,9 @@
 #include <vector>
 #include <iostream>
+#include <stdlib.h>
 using namespace std;
+
+#define PAUSE   system("pause")
 
 inline vector<int> vectorConstruct(int *a, int size)
 {
