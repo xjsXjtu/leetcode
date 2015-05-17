@@ -7,20 +7,17 @@ using namespace std;
 
 class Solution {
 private:
-    void permuteCore(vector<int>& nums, int k, vector<int>& path, vector<vector<int>>& out)
+    void permuteCore(int n, int k, int start, vector<int>& path, vector<vector<int>>& out)
     {
-        if(k == 0)
+        if(path.size() == k)
         {
             out.push_back(path);
             return;
         }
-        for(int i=0; i<nums.size() - k + 1; i++)
+        for(int i=start; i<n-k+2+path.size(); i++)
         {
-            path.push_back(nums[i]);
-            vector<int> nums_bak(nums);
-            nums.erase(nums.begin(), nums.begin() + i + 1);
-            permuteCore(nums, k-1, path, out);
-            nums = nums_bak;
+            path.push_back(i);
+            permuteCore(n, k, i+1, path, out);
             path.pop_back();
         }
     }
@@ -30,10 +27,7 @@ public:
     {
         vector<vector<int>> out;
         vector<int> path;
-        vector<int> nums;
-        for(int i=1; i<n+1; i++)
-            nums.push_back(i);
-        permuteCore(nums, k, path, out);
+        permuteCore(n, k, 1, path, out);
         return out;
     }
 };
