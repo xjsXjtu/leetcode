@@ -8,6 +8,20 @@ inline vector<int> vectorConstruct(int *a, int size)
     return out;
 }
 
+inline void printV(vector<int> v)
+{
+    vector<int>::iterator it;
+    cout << "[";
+    if(v.size() == 0)
+    {
+        cout << "]" << endl;
+    }
+    for(it=v.begin(); it != v.end() - 1; it++)
+    {
+        cout << *it << ", ";
+    }
+    cout << *it << "]" << endl;
+}
 inline void printVV(vector<vector<int>> out)
 {
     vector<vector<int>>::iterator it_vec_vec;
@@ -15,11 +29,6 @@ inline void printVV(vector<vector<int>> out)
     {
         vector<int>::iterator it;
         vector<int> v = *it_vec_vec;
-        cout << "[";
-        for(it=v.begin(); it != v.end()-1; it++)
-        {
-            cout << *it << ", ";
-        }
-        cout << *it << "]" << endl;
+        printV(v);
     }
 }
