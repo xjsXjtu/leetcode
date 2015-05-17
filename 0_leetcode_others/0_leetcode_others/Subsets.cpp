@@ -7,8 +7,9 @@ using namespace std;
 
 class Solution {
 private:
-    void combineRecursive(int n, int k, int start, vector<int>& path, vector<vector<int>>& out)
+    void combineRecursive(vector<int>& nums, int k, int start, vector<int>& path, vector<vector<int>>& out)
     {
+        int n = nums.size();
         if(path.size() == k)
         {
             out.push_back(path);
@@ -16,41 +17,21 @@ private:
         }
         for(int i=start; i<n-k+2+path.size(); i++)
         {
-            path.push_back(i);
-            combineRecursive(n, k, i+1, path, out);
+            path.push_back(nums[i-1]);
+            combineRecursive(nums, k, i+1, path, out);
             path.pop_back();
         }
     }
-
+public:
     // C(n, k) (n >= K)
-    vector<vector<int>> combine(int n, int k)
+    vector<vector<int>> subsets(vector<int>& nums)
     {
         vector<vector<int>> out;
         vector<int> path;
-        combineRecursive(n, k, 1, path, out);
-        return out;
-    }
-public:
-    vector<vector<int>> subsets(vector<int>& nums) 
-    {
-        vector<vector<int>> out;
         sort(nums.begin(), nums.end());
         for(int i=0; i<nums.size()+1; i++)
         {
-            vector<vector<int>> index_v = combine(nums.size(), i);
-            vector<int> v;
-            vector<vector<int>>::iterator itt;
-            for(itt=index_v.begin(); itt!=index_v.end(); itt++)
-            {
-                vector<int>::iterator it;
-                vector<int> tmp = *itt;
-                v.clear();
-                for(it=tmp.begin(); it!=tmp.end(); it++)
-                {
-                    v.push_back(nums[*it - 1]);
-                }
-                out.push_back(v);
-            }
+            combineRecursive(nums, i, 1, path, out);
         }
         return out;
     }
