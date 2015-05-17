@@ -22,18 +22,17 @@ public:
         factorial_tab[8] =   40320  ;
         factorial_tab[9] =   362880 ;
     }
-    void core(int n, int k, vector<char> nums, string& path)
+    void core(int n, int k, vector<char> &nums, string& path)
     {
-        cout << "k, " << k << endl;
+        // cout << "k, " << k << endl;
         if(n == 1)
         {
-            path.push_back(nums[nums.size() - 1]);
+            path.push_back(nums[0]);
             return;
         }
         int x = (k - 1) / factorial_tab[n-1];
-        path.push_back(nums[nums.size() - n + x]);
-        swap(nums[nums.size() - n + x], nums[nums.size() - n]);
-        sort(nums.begin() + nums.size() - n + 1, nums.end());
+        path.push_back(nums[x]);
+        nums.erase(nums.begin() + x);
         core(n-1, k - x * factorial_tab[n-1], nums, path);
     }
 public:
