@@ -15,6 +15,7 @@ inline void printV(vector<int> v)
     if(v.size() == 0)
     {
         cout << "]" << endl;
+        return;
     }
     for(it=v.begin(); it != v.end() - 1; it++)
     {
