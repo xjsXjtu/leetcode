@@ -13,51 +13,88 @@ RandomListNode *next, *random;
 RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
 };
 
+/*
+*
+*  The idea as below:
+*
+*  Consider we have a linked list as below:
+*
+*    node1->random = node2;
+*    node2->random = node1;
+*    node3->random = node1;
+*
+*       +-------------+
+*       |             v
+*    +-------+    +-------+    +-------+
+*    | node1 |----> node2 |----> node3 |--->NULL
+*    +-------+    +-------+    +-------+
+*      ^  ^           |           |
+*      |  +-----------+           |
+*      +--------------------------+
+*
+*
+*  To copy the list,
+*
+*    1) We insert a new node for each node's next position
+*
+*
+*       +-------------------------+
+*       |                         v
+*    +--+----+     +-----+    +-------+     +-----+    +-------+     +-----+
+*    | node1 |---> | NEW |----> node2 |---> | NEW |----> node3 |---> | NEW | ---> NULL
+*    +-------+     +-----+    +---+---+     +-----+    +--+----+     +-----+
+*      ^  ^                       |                       |
+*      |  +-----------------------+                       |
+*      +--------------------------------------------------+
+*
+*    2) Then, we can construt the new node's random pointer:
+*
+*        (node1->next) -> random  = (node1->random) -> next;
+*
+*    3) After we take out all of the "NEW" node to finish the copy.
+*
+*/
+
 class Solution {
 public:
-    RandomListNode *copyRandomList(RandomListNode *head)
-    {
-        if (head == NULL)
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        RandomListNode *p = NULL, *h = NULL, *t = NULL;
+        if (head == NULL){
             return NULL;
-        unordered_map<RandomListNode*, int> oldlist_node2index;
-        RandomListNode *cur = head;
-        int count = 0;
-        while (cur)
-        {
-            oldlist_node2index[cur] = count;
-            count++;
-            cur = cur->next;
         }
 
-        int size = count;
-        vector<RandomListNode*> newlist_index2node(size);
-        RandomListNode *newhead = new RandomListNode(head->label);
-        newlist_index2node[0] = newhead;
-        RandomListNode *new_cur = newhead, *old_cur = head;
-        count = 1;
-        while (old_cur->next)
-        {
-            RandomListNode *node = new RandomListNode(old_cur->next->label);
-            new_cur->next = node;
-            newlist_index2node[count] = node;
-            count++;
-
-            old_cur = old_cur->next;
-            new_cur = new_cur->next;
+        //creat a new node for each node and insert its next
+        p = head;
+        while (p != NULL){
+            RandomListNode *node = new RandomListNode(p->label);
+            node->next = p->next;
+            p->next = node;
+            p = node->next;
         }
 
-        new_cur = newhead;
-        old_cur = head;
-        while (new_cur)
-        {
-            if (old_cur->random != NULL)
-            {
-                new_cur->random = newlist_index2node[oldlist_node2index[old_cur->random]];
+        //copy random pointer for each new node
+        p = head;
+        while (p != NULL){
+            if (p->random != NULL){
+                p->next->random = p->random->next;
             }
-            new_cur = new_cur->next;
-            old_cur = old_cur->next;
+            p = p->next->next;
         }
-        return newhead;
+
+        //break to two list
+        p = head;
+        h = t = head->next;
+        while (p != NULL){
+            p->next = p->next->next;
+            if (t->next != NULL){
+                t->next = t->next->next;
+            }
+
+            p = p->next;
+            t = t->next;
+        }
+
+        return h;
     }
 };
 
