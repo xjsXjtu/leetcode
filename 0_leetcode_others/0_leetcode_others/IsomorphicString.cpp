@@ -11,23 +11,18 @@ public:
         assert(s.size() == t.size());
         int size = s.size();
         unordered_map<char, char> umap_s2t;
-        unordered_set<char> uset_t;
+        unordered_map<char, char> umap_t2s;
         for (int i = 0; i < size; i++)
         {
-            if (umap_s2t.find(s[i]) == umap_s2t.end())
+            // actually it's a one-one mapping
+            if (umap_s2t.find(s[i]) == umap_s2t.end() && umap_t2s.find(t[i]) == umap_t2s.end())
             {
-                if (uset_t.find(t[i]) == uset_t.end())
-                {
-                    umap_s2t.insert({ s[i], t[i] });
-                    uset_t.insert(t[i]);
-                }   
-                else
-                    return false;
+                umap_s2t.insert({ s[i], t[i] });
+                umap_t2s.insert({ t[i], s[i] });
             }
-            else
+            else if (umap_s2t[s[i]] != t[i] || umap_t2s[t[i]] != s[i])
             {
-                if (umap_s2t[s[i]] != t[i])
-                    return false;
+                return false;
             }
         }
         return true;
