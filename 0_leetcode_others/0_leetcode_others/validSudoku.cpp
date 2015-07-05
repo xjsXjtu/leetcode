@@ -7,81 +7,21 @@
 using namespace std;
 
 class Solution {
-private:
-    bool checkRow(const vector<vector<char>>& board, int row)
-    {
-        unordered_set<char> us;
-        for (int i = 0; i < 9; i++)
-        {
-            char ch = board[row][i];
-            if ( ch != '.')
-            {
-                if (us.find(ch) == us.end())
-                {
-                    us.insert(ch);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    bool checkCol(const vector<vector<char>>& board, int col)
-    {
-        unordered_set<char> us;
-        for (int i = 0; i < 9; i++)
-        {
-            char ch = board[i][col];
-            if (ch != '.')
-            {
-                if (us.find(ch) == us.end())
-                {
-                    us.insert(ch);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    bool checkBlob(const vector<vector<char>>& board, int topx, int topy)
-    {
-        unordered_set<char> us;
-        int endx = topx + 3, endy = topy + 3;
-        for (int i = topx; i < endx; i++)
-        {
-            for (int j = topy; j < endy; j++)
-            {
-                char ch = board[i][j];
-                if (ch != '.')
-                {
-                    if (us.find(ch) == us.end())
-                    {
-                        us.insert(ch);
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
 public:
-    bool isValidSudoku(vector<vector<char>>& board) {
-        assert(board.size() == 9 && board[0].size() == 9);
+    bool isValidSudoku(vector<vector<char> > &board) {
+        vector<vector<bool>> rows(9, vector<bool>(9, false));
+        vector<vector<bool>> cols(9, vector<bool>(9, false));
+        vector<vector<bool>> blocks(9, vector<bool>(9, false));
+
         for (int i = 0; i < 9; i++)
-        {
-            if (!checkRow(board, i) || !checkCol(board, i) || !checkBlob(board, (i / 3) * 3, (i % 3) * 3))
+            for (int j = 0; j < 9; j++)
             {
-                return false;
+                if (board[i][j] == '.')continue;
+                int num = board[i][j] - '1';
+                if (rows[i][num] || cols[j][num] || blocks[i - i % 3 + j / 3][num])
+                    return false;
+                rows[i][num] = cols[j][num] = blocks[i - i % 3 + j / 3][num] = true;
             }
-        }
         return true;
     }
 };
