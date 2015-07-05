@@ -8,22 +8,23 @@ using namespace std;
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        assert(s.size() == t.size());
-        int size = s.size();
-        unordered_map<char, char> umap_s2t;
-        unordered_map<char, char> umap_t2s;
-        for (int i = 0; i < size; i++)
-        {
-            // actually it's a one-one mapping
-            if (umap_s2t.find(s[i]) == umap_s2t.end() && umap_t2s.find(t[i]) == umap_t2s.end())
-            {
-                umap_s2t.insert({ s[i], t[i] });
-                umap_t2s.insert({ t[i], s[i] });
+        if (s.size() != t.size()) return false;
+
+        const int MAXCHAR = 256;
+        char maps[MAXCHAR] = { 0 }, mapt[MAXCHAR] = { 0 };
+        //memset(maps, 0, sizeof(maps));
+        //memset(mapt, 0, sizeof(mapt));
+
+        for (int i = 0; i<s.size(); i++){
+            if (maps[s[i]] == 0 && mapt[t[i]] == 0){
+                maps[s[i]] = t[i];
+                mapt[t[i]] = s[i];
+                continue;
             }
-            else if (umap_s2t[s[i]] != t[i] || umap_t2s[t[i]] != s[i])
-            {
-                return false;
+            if (maps[s[i]] == t[i] && mapt[t[i]] == s[i]) {
+                continue;
             }
+            return false;
         }
         return true;
     }
