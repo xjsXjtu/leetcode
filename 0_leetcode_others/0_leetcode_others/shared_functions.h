@@ -11,9 +11,10 @@ inline vector<int> vectorConstruct(int *a, int size)
     return out;
 }
 
-inline void printV(vector<int> v)
+template<typename T>
+inline void printV(vector<T> v)
 {
-    vector<int>::iterator it;
+    vector<T>::iterator it;
     cout << "[";
     if(v.size() == 0)
     {
@@ -26,13 +27,15 @@ inline void printV(vector<int> v)
     }
     cout << *it << "]" << endl;
 }
-inline void printVV(vector<vector<int>> out)
+
+template<typename T>
+inline void printVV(vector<vector<T>> out)
 {
-    vector<vector<int>>::iterator it_vec_vec;
+    vector<vector<T>>::iterator it_vec_vec;
     for(it_vec_vec = out.begin(); it_vec_vec != out.end(); it_vec_vec++)
     {
-        vector<int>::iterator it;
-        vector<int> v = *it_vec_vec;
+        vector<T>::iterator it;
+        vector<T> v = *it_vec_vec;
         printV(v);
     }
 }
