@@ -198,6 +198,9 @@
     <ClCompile Include="RemoveFromDuplicatedListII.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RemoveDuplicateFromSortedArrayII.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shared_functions.h">
