@@ -225,6 +225,15 @@
     <ClCompile Include="PalindromePartitioning.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="JumpGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BestTimeToBuyAndSellStockII.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GasStation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shared_functions.h">
