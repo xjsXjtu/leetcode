@@ -36,5 +36,34 @@ private:
             root = root->right;
         return root->val;
     }
-
+public:
+    bool isValidBST_2(TreeNode* root) {
+        int max, min;
+        return rec(root, &max, &min);
+    }
+private:
+    bool rec(const TreeNode* root, int *max, int *min)
+    {
+        if(root==NULL) return true;
+        if(root->left == NULL && root->right == NULL)
+        {
+            *max = *min = root->val;
+            return true;
+        }
+        int max1, min1;
+        *max = *min = root->val;
+        if(root->left)
+        {
+            if(false == rec(root->left, &max1, &min1)) return false;
+            if(root->val <= max1) return false;
+            *min = min1;
+        }
+        if(root->right)
+        {
+            if(false == rec(root->right, &max1, &min1)) return false;
+            if(root->val >= min1) return false;
+            *max = max1;
+        }
+        return true;
+    }
 };

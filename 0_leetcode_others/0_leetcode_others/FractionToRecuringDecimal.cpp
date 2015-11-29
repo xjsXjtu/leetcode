@@ -15,7 +15,7 @@ using namespace std;
 
 class Solution {
 public:
-    string fractionToDecimal(int numerator, int denominator) {
+    string fractionToDecimal2(int numerator, int denominator) {
         if(numerator == 0) return "0";
         bool flag = (numerator<0) ^ (denominator<0);
         int64_t dd = abs(int64_t(numerator));
@@ -44,6 +44,29 @@ public:
         out.append(string(dec.begin() + umap[rem], dec.end()));
         out.append(")");
         return out;        
+    }
+    string fractionToDecimal(int numerator, int denominator) {
+        int integer = numerator / denominator;
+        numerator %= denominator;
+        std::string out = std::to_string(integer);
+        if(numerator == 0)  return out; // integer
+        out.push_back('.');
+        std::unordered_map<int, int> mp; // numerator -> out string point
+        while(numerator)
+        {
+            auto it = mp.find(numerator);
+            if(it != mp.end())
+            {
+                out.insert(it->second, "(");
+                out.push_back(')');
+                return out;  // loop decimal
+            }
+            mp[numerator] = out.size();
+            numerator *= 10;
+            out.push_back(numerator / denominator + '0');
+            numerator %= denominator;
+        }
+        return out; // limited decimal
     }
 };
 

@@ -18,33 +18,33 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> permuteUnique(vector<int> &num) {
-        vector<bool> used(num.size(), false);
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        int size = nums.size();
+        vector<bool> used(size, false);
+        vector<vector<int>> out;
         vector<int> path;
-        vector<vector<int>> res;
-        rec(num, used, path, res);
-        return res;
+        rec(nums, &used, path, &out);
+        return out;
     }
 private:
-    void rec(vector<int>& num, vector<bool> &used, vector<int> &path, vector<vector<int>>& res)
+    void rec(const vector<int>& nums, vector<bool> *used, const vector<int> path, vector<vector<int>> *out)
     {
-        if(path.size() == num.size())
+        if(path.size() == nums.size())
         {
-            res.push_back(path);
+            out->push_back(path);
             return;
         }
+        int size = nums.size();
         unordered_set<int> uset;
-        int size = num.size();
         for(int i=0; i<size; i++)
         {
-            if(used[i] || uset.find(num[i]) != uset.end()) continue;
-            uset.insert(num[i]);
-
-            path.push_back(num[i]);
-            used[i] = true;
-            rec(num, used, path, res);
-            path.pop_back();
-            used[i] = false;
+            if(used->at(i) || uset.find(nums[i]) != uset.end()) continue;
+            uset.insert(nums[i]);
+            used->at(i) = true;
+            vector<int> path2(path);
+            path2.push_back(nums[i]);
+            rec(nums, used, path2, out);
+            used->at(i) = false;
         }
     }
 };

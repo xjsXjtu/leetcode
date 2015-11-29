@@ -15,7 +15,27 @@ using namespace std;
 
 class Solution {
 public:
-    int mySqrt(int x) 
+    int mySqrt(int x) {
+        // binary search in [0, x]
+        int64_t mid;
+        int low = 0, high = x; // when in doubt, use int64_t
+        while(low <= high)
+        {
+            mid = low + ((high - low) >> 1);
+            if(mid * mid == x) return mid;
+            if(mid * mid < x)
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+        // for array searching task, return -1 here: means not found.
+        return high; // very easy to make mistake by returning mid
+    }
+    int mySqrt_newton(int x) 
     {
         assert(x >= 0);
         if(x == 0)
@@ -45,6 +65,7 @@ int main()
 {
     test(0);
     test(1);
+    test(2);
     test(9);
     test(10);
     test(1579267599); // math.sqrt(1579267599) = 39739.99998741822

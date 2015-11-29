@@ -11,30 +11,25 @@ struct TreeNode {
      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  };
 class Solution {
-    typedef vector<int>::iterator viit_t;
+    typedef vector<int>::iterator vit;
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
         return rec(preorder.begin(), preorder.end(), inorder.begin(), inorder.end());
     }
-private:
-    TreeNode* rec(viit_t prel, viit_t prer, viit_t inl, viit_t inr)
-    {
-        int n = distance(prel, prer);
-        n = distance(inl, inr);
-        assert(distance(prel, prer) == distance(inl, inr));
-        TreeNode *root = NULL;
-        if(distance(prel, prer)==0)
-        {
-            return root;
-        }
-        root = new TreeNode(*prel);
-        viit_t it = find(inl, inr, *prel);
-        int next_presize = distance(inl, it);
-        root->left  = rec(prel + 1, prel + 1 + next_presize, inl, it);
-        root->right = rec(prel + 1 + next_presize, prer, it + 1, inr);
-        return root;
-    }
     
+private:
+    TreeNode* rec(vit prebegin, vit preend, vit inbegin, vit inend)
+    {
+        TreeNode *out = NULL;
+        if(prebegin == preend) return out;
+        out = new TreeNode(*prebegin);
+        vit split = std::find(inbegin, inend, *prebegin);
+        int left_size = split - inbegin;
+        int right_size = inend - split;
+        out->left  = rec(prebegin+1,           prebegin+1+left_size, inbegin, split);
+        out->right = rec(prebegin+1+left_size, preend,               split+1, inend);
+        return out;
+    }
 };
 
 TreeNode* test(int *pre, int *in, int size)

@@ -8,69 +8,57 @@ using namespace std;
 
 class Solution {
 public:
-    int numIslands(vector<vector<char>>& grid) 
-    {
-        queue<Position> q;
-        int sizex = grid.size();
-        if(sizex <= 0)
-            return 0;
-        int sizey = grid[0].size();
-        
-        int num = 0; 
-        Position pos;
-        while(findNextOne(grid, sizex, sizey, pos))
+    int numIslands(vector<vector<char>>& grid) {
+        int xsize = grid.size();
+        if(xsize==0) return 0;
+        int ysize = grid[0].size();
+        queue<pair<int, int>> q;
+        int x, y;
+        int out = 0;
+        while(findNextElemOne(grid, &x, &y))
         {
-            num++;
-            q.push(pos);
+            out++;
+            pushQueueChangeElem(&grid, &q, x, y, out + '2');
             while(!q.empty())
             {
-                pos = q.front(); q.pop();
-                int x=pos.x, y = pos.y;
-                grid[x][y] = '2';
-                if(x > 0 && grid[x-1][y] == '1')
-                {
-                    process_elem(grid, x-1, y, q);
-                }
-                if(x < sizex -1 && grid[x+1][y] == '1')
-                {
-                    process_elem(grid, x+1, y, q);
-                }
-                if(y > 0 && grid[x][y-1] == '1')
-                {
-                    process_elem(grid, x, y-1, q);
-                }
-                if(y < sizey - 1 && grid[x][y+1] == '1')
-                {
-                    process_elem(grid, x, y+1, q);
-                } 
+                x = q.front().first;
+                y = q.front().second;
+                q.pop();
+                pushQueueChangeElem(&grid, &q, x-1, y, out + '2');
+                pushQueueChangeElem(&grid, &q, x+1, y, out + '2');
+                pushQueueChangeElem(&grid, &q, x, y-1, out + '2');
+                pushQueueChangeElem(&grid, &q, x, y+1, out + '2');
             }
         }
-        return num;
+        return out;
     }
 private:
-    struct Position{
-        int x; int y;
-        Position(int px=0, int py=0): x(px), y(py){}
-    };
-    bool findNextOne(vector<vector<char>>& grid, int sizex, int sizey, Position &pos)
+    void pushQueueChangeElem(vector<vector<char>>  *grid, queue<pair<int, int>> *q, const int x, const int y, const char tag)
     {
-        for(int x=0; x<sizex; x++)
+        int xsize = grid->size();
+        int ysize = (*grid)[0].size();
+        if(x>=0 && x<xsize && y>=0 && y<ysize && (*grid)[x][y]=='1')
         {
-            for(int y=0; y<sizey; y++)
+            (*grid)[x][y] = tag;
+            q->push(make_pair(x, y));
+        }
+    }
+    bool findNextElemOne(const vector<vector<char>>& grid, int *x, int *y)
+    {
+        int xsize = grid.size();
+        int ysize = grid[0].size();
+        for(int i=0; i<xsize; i++)
+        {
+            for(int j=0; j<ysize; j++)
             {
-                if(grid[x][y] == '1')
+                if(grid[i][j] == '1')
                 {
-                    pos.x = x; pos.y = y;
+                    *x = i; *y = j;
                     return true;
                 }
             }
         }
         return false;
-    }
-    void process_elem(vector<vector<char>> &board, int x, int y, queue<Position> &q)
-    {
-        q.push(Position(x, y));
-        board[x][y] = '2';
     }
 };
 

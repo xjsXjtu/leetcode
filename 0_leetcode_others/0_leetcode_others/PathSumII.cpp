@@ -13,30 +13,31 @@ public:
     vector<vector<int>> pathSum(TreeNode* root, int sum) {
         vector<vector<int>> out;
         vector<int> path;
-        if(root == NULL)
-            return out;
-        rec(root, sum, out, path);
+        rec(root, sum, path, &out);
         return out;
     }
 private:
-    void rec(TreeNode *root, int sum, vector<vector<int>>& out, vector<int>& path)
+    void rec(const TreeNode *root, int sum, vector<int> path, vector<vector<int>> *out)
     {
+        if(root == NULL) return;
+        path.push_back(root->val);
         if(root->left == NULL && root->right == NULL)
         {
             if(sum == root->val)
             {
-                path.push_back(root->val);
-                out.push_back(path);
+                out->push_back(path);
+                return;
             }
-            return;
         }
-        path.push_back(root->val);
-        vector<int> bak(path);
-        if(root->left)
-            rec(root->left, sum - root->val, out, path);
+        
+        if(root->left) 
+        {
+            rec(root->left, sum - root->val, path, out);
+        }
         if(root->right)
-            rec(root->right, sum - root->val, out, bak);
-        return;
+        {
+            rec(root->right, sum - root->val, path, out);
+        }
     }
 };
 

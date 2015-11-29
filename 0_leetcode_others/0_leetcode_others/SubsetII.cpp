@@ -19,34 +19,33 @@ using namespace std;
 class Solution {
 public:
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
-        vector<vector<int>> res;
-        vector<int> path;
         sort(nums.begin(), nums.end());
+        vector<int> path;
+        vector<vector<int>> out;
         int size = nums.size();
-        for(int i=0; i<size+1; i++)
+        for(int i=0; i<=size; i++)
         {
-            rec(nums, 0, i, path, res);
+            rec(nums, 0, i, path, &out);
         }
-        return res;
+        return out;
     }
 private:
-    void rec(vector<int>& nums, int start_pos, int subset_size, vector<int>& path, vector<vector<int>>& res)
+    void rec(vector<int>& nums, int start_pos, int subset_size, vector<int> path, vector<vector<int>> *out)
     {
         if(subset_size == 0)
         {
-            res.push_back(path);
+            out->push_back(path);
             return;
         }
-        int nsize = nums.size();
-        assert(start_pos + subset_size <= nsize);
+        int size = nums.size();
         int last_pos = -1;
-        for(int i=start_pos; i<nsize-subset_size+1; i++)
+        for(int i=start_pos; i<=size-subset_size; i++) 
         {
-            if(last_pos != -1 && nums[i] == nums[last_pos]) continue;
+            if(last_pos != -1 && nums[last_pos] == nums[i]) continue;
             last_pos = i;
-            path.push_back(nums[i]);
-            rec(nums, i + 1, subset_size - 1, path, res);
-            path.pop_back();
+            vector<int> path2(path);
+            path2.push_back(nums[i]);
+            rec(nums, i+1, subset_size-1, path2, out);
         }
     }
 };

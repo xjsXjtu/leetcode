@@ -9,72 +9,89 @@ using namespace std;
 class Solution {
 public:
     void solve(vector<vector<char>>& board) {
-        queue<pos_t> posq;
-        int sizex = board.size();
-        if(sizex <= 1)
-            return;
-        int sizey = board[0].size();
-        for(int i=0; i<sizey; i++)
+        int xsize = board.size();
+        if(xsize==0) return;
+        int ysize = board[0].size();
+        queue<pair<int, int>> q;
+        int x, y;
+        while(findNextElemOAlongEdge(board, &x, &y)) // find seed
         {
-            process_elem(board, 0, i, posq);
-            process_elem(board, sizex - 1, i, posq);            
-        }
-        for(int i=0; i<sizex; i++)
-        {
-            process_elem(board, i, 0, posq);
-            process_elem(board, i, sizey - 1, posq);            
-        }
-        // DFS
-        while(!posq.empty())
-        {
-            pos_t curpos = posq.front(); posq.pop();
-            int x = curpos.x, y = curpos.y;
-            if(x > 0 && board[x-1][y] == 'O')
+            pushQueueChangeElem(&board, &q, x, y, 'R');
+            while(!q.empty())
             {
-                process_elem(board, x-1, y, posq);
-            }
-            if(x < sizex -1 && board[x+1][y] == 'O')
-            {
-                process_elem(board, x+1, y, posq);
-            }
-            if(y > 0 && board[x][y-1] == 'O')
-            {
-                process_elem(board, x, y-1, posq);
-            }
-            if(y < sizey - 1 && board[x][y+1] == 'O')
-            {
-                process_elem(board, x, y+1, posq);
+                x = q.front().first;
+                y = q.front().second;
+                q.pop();
+                pushQueueChangeElem(&board, &q, x-1, y, 'R');
+                pushQueueChangeElem(&board, &q, x+1, y, 'R');
+                pushQueueChangeElem(&board, &q, x, y-1, 'R');
+                pushQueueChangeElem(&board, &q, x, y+1, 'R');
             }
         }
-        for(int x=0; x<sizex; x++)
-            for(int y=0; y<sizey; y++)
-            {
-                switch (board[x][y])
-                {
-                case 'V':
-                    board[x][y] = 'O';
-                    break;
-                case 'O':
-                    board[x][y] = 'X';
-                    break;
-                default:
-                    break;
-                }
-            }
+        normalizeElem(&board);
+        return;
     }
 private:
-    struct pos_t{
-        int x;
-        int y;
-        pos_t(int px, int py):x(px), y(py){}
-    };
-    void process_elem(vector<vector<char>> &board, int x, int y, queue<pos_t> &q)
+    void normalizeElem(vector<vector<char>>  *grid)
     {
-        if(board[x][y] == 'O')
+        int xsize = grid->size();
+        int ysize = (*grid)[0].size();
+        for(int i=0; i<xsize; i++)
         {
-            q.push(pos_t(x, y));
-            board[x][y] = 'V';
+            for(int j=0; j<ysize; j++)
+            {
+                if((*grid)[i][j] == 'R')
+                {
+                    (*grid)[i][j] = 'O';
+                }
+                else
+                {
+                    (*grid)[i][j] = 'X';
+                }
+            }
         }
+    }
+    void pushQueueChangeElem(vector<vector<char>>  *grid, queue<pair<int, int>> *q, const int x, const int y, const char tag)
+    {
+        int xsize = grid->size();
+        int ysize = (*grid)[0].size();
+        if(x>=0 && x<xsize && y>=0 && y<ysize && (*grid)[x][y]=='O')
+        {
+            (*grid)[x][y] = tag;
+            q->push(make_pair(x, y));
+        }
+    }
+    bool findNextElemOAlongEdge(const vector<vector<char>>& grid, int *x, int *y)
+    {
+        int xsize = grid.size();
+        int ysize = grid[0].size();
+        for(int i=0; i<ysize; i++)
+        {
+            if(grid[0][i] == 'O')
+            {
+                *x = 0; *y = i;
+                return true;
+            }
+            if(grid[xsize-1][i] == 'O')
+            {
+                *x = xsize-1; *y = i;
+                return true;
+            }
+        }
+        for(int i=0; i<xsize; i++)
+        {
+            if(grid[i][0] == 'O')
+            {
+                *x = i; *y = 0;
+                return true;
+            }
+            if(grid[i][ysize-1] == 'O')
+            {
+                *x = i; *y = ysize-1;
+                return true;
+            }
+        }
+        return false;
     }
 };
 
